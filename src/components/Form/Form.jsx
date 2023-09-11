@@ -29,7 +29,7 @@ export class Form extends Component {
         reservedName = true;
       }
     });
-    if (reservedName == true) {
+    if (reservedName === true) {
       Notiflix.Notify.failure('You should take another name');
       return;
     } else {
