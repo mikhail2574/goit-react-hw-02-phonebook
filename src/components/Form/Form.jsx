@@ -28,6 +28,8 @@ export class Form extends Component {
       if (user.name === contact.name) {
         reservedName = true;
       }
+
+      return null;
     });
     if (reservedName === true) {
       Notiflix.Notify.failure('You should take another name');
