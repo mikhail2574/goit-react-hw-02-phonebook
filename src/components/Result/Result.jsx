@@ -1,4 +1,5 @@
 import styles from './Result.module.css';
+import PropTypes from 'prop-types';
 
 const Result = ({ data, deleteItem }) => {
   const { id, name, number } = data;
@@ -17,6 +18,12 @@ const Result = ({ data, deleteItem }) => {
       </button>
     </li>
   );
+};
+
+Result.propTypes = {
+  data: PropTypes.array,
+  key: PropTypes.string,
+  deleteItem: PropTypes.object,
 };
 
 export default Result;

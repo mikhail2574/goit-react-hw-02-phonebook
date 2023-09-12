@@ -24,7 +24,7 @@ export class Form extends Component {
       id: nanoid(),
     };
     let reservedName = false;
-    this.state.data.map(user => {
+    this.state.data.find(user => {
       if (user.name === contact.name) {
         reservedName = true;
       }

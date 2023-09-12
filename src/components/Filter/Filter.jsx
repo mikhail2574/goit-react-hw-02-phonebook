@@ -1,4 +1,5 @@
 import styles from './Filter.module.css';
+import PropTypes from 'prop-types';
 
 const Filter = ({ filterItem }) => {
   const searchFocus = () => {
@@ -20,6 +21,10 @@ const Filter = ({ filterItem }) => {
       />
     </div>
   );
+};
+
+Filter.propTypes = {
+  filterItem: PropTypes.array,
 };
 
 export default Filter;
