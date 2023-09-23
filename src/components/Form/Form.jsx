@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './Form.module.css';
-import Result from 'components/Result/Result';
 import Filter from 'components/Filter/Filter';
+import List from 'components/List/List';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
 export class Form extends Component {
@@ -36,7 +36,11 @@ export class Form extends Component {
       return;
     } else {
       Notiflix.Notify.success(`User ${contact.name} added!`);
-      this.setState({ data: [...this.state.data, contact] });
+      this.setState(prevState => ({
+        data: [...prevState.data, contact],
+      }));
+      evt.target.elements.name.value = '';
+      evt.target.elements.number.value = '';
     }
   }
 
@@ -53,14 +57,13 @@ export class Form extends Component {
     if (!evt.target.value) {
       this.setState({ filtered: [] });
     } else {
-      // person.name.toLowerCase().includes(evt.target.value.toLowerCase()
       const filteredItems = this.state.data.filter(person =>
         person.name.toLowerCase().includes(evt.target.value.toLowerCase())
       );
       if (filteredItems.length) {
-        this.setState({ filtered: filteredItems });
+        this.setState(() => ({ filtered: filteredItems }));
       } else {
-        this.setState({ filtered: 'Not found' });
+        this.setState(() => ({ filtered: 'Not found' }));
       }
     }
   }
@@ -70,7 +73,7 @@ export class Form extends Component {
       <>
         <form className={styles.form} onSubmit={this.handleSubmit}>
           <h2 className={styles.title}>Phonebook</h2>
-          <label name="name">Name</label>
+          <label htmlFor="name">Name</label>
           <input
             type="text"
             name="name"
@@ -90,25 +93,7 @@ export class Form extends Component {
           </button>
         </form>
         <Filter filterItem={this.filterItem} />
-        <ul className={styles.gallery}>
-          {this.state.filtered === 'Not found'
-            ? ' '
-            : this.state.filtered.length
-            ? this.state.filtered.map(contact => (
-                <Result
-                  data={contact}
-                  key={contact.id}
-                  deleteItem={this.deleteItem}
-                />
-              ))
-            : this.state.data.map(contact => (
-                <Result
-                  data={contact}
-                  key={contact.id}
-                  deleteItem={this.deleteItem}
-                />
-              ))}
-        </ul>
+        <List state={this.state} deleteItem={this.deleteItem} />
       </>
     );
   }
