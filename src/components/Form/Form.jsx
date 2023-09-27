@@ -10,6 +10,7 @@ export class Form extends Component {
     this.state = {
       data: [],
       filtered: [],
+      isFilterOpen: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
@@ -45,25 +46,24 @@ export class Form extends Component {
   }
 
   deleteItem(evt) {
-    // evt.target.getAttribute('data-id');
     const idToDelete = evt.target.getAttribute('data-id');
-    const newData = this.state.data.filter(
-      contact => contact.id !== idToDelete
-    );
-    this.setState({ data: newData });
+    this.setState({
+      data: this.data.filter(contact => contact.id !== idToDelete),
+    });
   }
 
   filterItem(evt) {
     if (!evt.target.value) {
-      this.setState({ filtered: [] });
+      return this.setState({ isFilterOpen: false, filtered: [] });
     } else {
+      this.setState({ isFilterOpen: true });
       const filteredItems = this.state.data.filter(person =>
         person.name.toLowerCase().includes(evt.target.value.toLowerCase())
       );
       if (filteredItems.length) {
         this.setState(() => ({ filtered: filteredItems }));
       } else {
-        this.setState(() => ({ filtered: 'Not found' }));
+        this.setState(() => ({ filtered: false }));
       }
     }
   }

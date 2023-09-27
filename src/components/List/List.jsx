@@ -4,9 +4,9 @@ import styles from '../Form/Form.module.css';
 const List = ({ state, deleteItem }) => {
   return (
     <ul className={styles.gallery}>
-      {state.filtered === 'Not found'
-        ? ' '
-        : state.filtered.length
+      {state.filtered === false
+        ? 'Not found'
+        : state.isFilterOpen
         ? state.filtered.map(contact => (
             <Result data={contact} key={contact.id} deleteItem={deleteItem} />
           ))
