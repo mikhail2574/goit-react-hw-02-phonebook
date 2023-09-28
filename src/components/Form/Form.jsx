@@ -9,8 +9,6 @@ export class Form extends Component {
     super();
     this.state = {
       data: [],
-      filtered: [],
-      isFilterOpen: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
@@ -48,23 +46,17 @@ export class Form extends Component {
   deleteItem(evt) {
     const idToDelete = evt.target.getAttribute('data-id');
     this.setState({
-      data: this.data.filter(contact => contact.id !== idToDelete),
+      data: this.state.data.filter(contact => contact.id !== idToDelete),
     });
   }
 
   filterItem(evt) {
-    if (!evt.target.value) {
-      return this.setState({ isFilterOpen: false, filtered: [] });
+    if (evt === undefined || !evt.target.value) {
+      return this.state.data;
     } else {
-      this.setState({ isFilterOpen: true });
-      const filteredItems = this.state.data.filter(person =>
+      return this.state.data.filter(person =>
         person.name.toLowerCase().includes(evt.target.value.toLowerCase())
       );
-      if (filteredItems.length) {
-        this.setState(() => ({ filtered: filteredItems }));
-      } else {
-        this.setState(() => ({ filtered: false }));
-      }
     }
   }
 
@@ -92,8 +84,10 @@ export class Form extends Component {
             Add contact
           </button>
         </form>
-        <Filter filterItem={this.filterItem} />
-        <List state={this.state} deleteItem={this.deleteItem} />
+        <Filter
+          filterItem={() => this.filterItem()}
+          deleteItem={this.deleteItem}
+        />
       </>
     );
   }
