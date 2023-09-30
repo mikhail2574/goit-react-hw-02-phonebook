@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import styles from './Form.module.css';
 import Filter from 'components/Filter/Filter';
-import List from 'components/List/List';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
+import List from 'components/List/List';
+
 export class Form extends Component {
   constructor() {
     super();
     this.state = {
       data: [],
+      name: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.filterItem = this.filterItem.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
   }
 
   handleSubmit(evt) {
@@ -50,14 +53,16 @@ export class Form extends Component {
     });
   }
 
-  filterItem(evt) {
-    if (evt === undefined || !evt.target.value) {
-      return this.state.data;
-    } else {
-      return this.state.data.filter(person =>
-        person.name.toLowerCase().includes(evt.target.value.toLowerCase())
-      );
-    }
+  onInputChange(value) {
+    this.setState({
+      name: value,
+    });
+  }
+
+  filterItem() {
+    return this.state.data.filter(person =>
+      person.name.toLowerCase().includes(this.state.name.toLowerCase())
+    );
   }
 
   render() {
@@ -85,9 +90,14 @@ export class Form extends Component {
           </button>
         </form>
         <Filter
-          filterItem={() => this.filterItem()}
           deleteItem={this.deleteItem}
+          onInputChange={this.onInputChange}
         />
+        {this.state.name !== '' ? (
+          <List data={this.filterItem()} deleteItem={this.deleteItem} />
+        ) : (
+          <List data={this.state.data} deleteItem={this.deleteItem} />
+        )}
       </>
     );
   }
