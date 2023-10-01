@@ -48,9 +48,9 @@ export class Form extends Component {
 
   deleteItem(evt) {
     const idToDelete = evt.target.getAttribute('data-id');
-    this.setState({
-      data: this.state.data.filter(contact => contact.id !== idToDelete),
-    });
+    this.setState(prevState => ({
+      data: prevState.data.filter(contact => contact.id !== idToDelete),
+    }));
   }
 
   onInputChange(value) {
@@ -89,10 +89,7 @@ export class Form extends Component {
             Add contact
           </button>
         </form>
-        <Filter
-          deleteItem={this.deleteItem}
-          onInputChange={this.onInputChange}
-        />
+        <Filter onInputChange={this.onInputChange} />
         {this.state.name !== '' ? (
           <List data={this.filterItem()} deleteItem={this.deleteItem} />
         ) : (
